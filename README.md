@@ -11,7 +11,7 @@ GLDates is a small library of date utilities written in Swift to handle several 
 
 ####[Carthage](http://github.com/Carthage/Carthage)
 ```ruby 
-github "mrkeithelliott/GLDates" ~> 0.1
+github "mrkeithelliott/GLDates" ~> 0.2
 ```
 
 ## Usage
