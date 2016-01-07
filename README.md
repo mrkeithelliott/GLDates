@@ -54,8 +54,6 @@ let firstOfYear = lastYear.firstOfYear()
 let lastDayOfCurrentYear = today.lastDayOfYear()
 let lastDayOfLastYear = lastYear.lastDayOfYear()
 ```
-
-```
 ## License
 
 	The MIT License (MIT)
