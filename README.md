@@ -27,29 +27,29 @@ let yesterday = NSDate.yesterday()
 ```
 
 #### Date operations
-Getting Last Year
+#####Getting Last Year
 ```swift
 let today = NSDate()
 let lastYear = today.previousDate(1, monthsBack: 0, daysBack: 0)
 ```
-Getting Last month
+#####Getting Last month
 ```swift
 let lastMonth = today.previousDate(0, monthsBack: 1, daysBack: 0)
 ```
-Getting the first day of the month
+#####Getting the first day of the month
 ```swift
 let firstOfMonth = NSDate().firstOfMonth()
 ```
-Getting the last day of the month, given a starting date
+#####Getting the last day of the month, given a starting date
 ```swift
 let lastDayOfCurrentMonth = today.lastDayOfMonth()
 let lastDayOfLastMonth = lastMonth.lastDayOfMonth()
 ```
-Getting the first day of the year
+#####Getting the first day of the year
 ```swift
 let firstOfYear = lastYear.firstOfYear()
 ```
-Getting the last day of the year
+#####Getting the last day of the year
 ```swift
 let lastDayOfCurrentYear = today.lastDayOfYear()
 let lastDayOfLastYear = lastYear.lastDayOfYear()
