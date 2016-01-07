@@ -19,13 +19,12 @@ github "mrkeithelliott/GLDates" ~> 0.1
 ```swift
 import GLDates
 ```
-
-#### Getting yesterday
+#### Date operations
 ```swift
+// Getting yesterday
 let yesterday = NSDate.yesterday()   
 ```
 
-#### Date operations
 ```swift
 // Getting Last Year
 let today = NSDate()
