@@ -16,7 +16,31 @@ github "mrkeithelliott/GLDates" ~> 0.1
 ```
 
 ## Usage
+####Import `GLDates` module
+```swift
+import GLDates
+```
 
+#### Getting yesterday
+```swift
+let yesterday = NSDate.yesterday()   
+```
+
+#### Getting Last year and performing other operations
+```swift
+let today = NSDate()
+let lastYear = today.previousDate(1, monthsBack: 0, daysBack: 0)
+let lastMonth = today.previousDate(0, monthsBack: 1, daysBack: 0)
+
+let firstOfMonth = NSDate().firstOfMonth()
+let firstOfYear = lastYear.firstOfYear()
+
+let lastDayOfCurrentMonth = today.lastDayOfMonth()
+let lastDayOfLastMonth = lastMonth.lastDayOfMonth()
+let lastDayOfCurrentYear = today.lastDayOfYear()
+let lastDayOfLastYear = lastYear.lastDayOfYear()
+
+```
 ## License
 
 	The MIT License (MIT)
