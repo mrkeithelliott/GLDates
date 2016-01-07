@@ -1,5 +1,5 @@
 # GLDates ![GitHub license](https://img.shields.io/badge/license-MIT-lightgrey.svg)
-Swift Date utilities
+## Swift Date utilities
 GLDates is a small library of date utilities to handle lots of common date operations.  It is implemented as an extension on NSDate.
 #  [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) ![Swift 2.0](https://img.shields.io/badge/swift-2.0-orange.svg) ![Release 0.2](https://img.shields.io/badge/release-0.2-blue.svg)
 
