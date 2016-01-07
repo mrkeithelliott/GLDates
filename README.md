@@ -43,4 +43,5 @@ github "mrkeithelliott/GLDates" ~> 0.1
 
 This project is released under the [MIT license](https://github.com/mrkeithelliott/GLDates/master/LICENSE).
 
+[xcode]: https://developer.apple.com/xcode "Xcode"
 
