@@ -11,7 +11,7 @@ Simple NSDate extension to provide some common date utilities
 ##Installation
 
 ####[Carthage](http://github.com/Carthage/Carthage)
-```ruby
+```ruby 
 github "mrkeithelliott/GLDates" ~> 0.1
 ```
 
