@@ -2,6 +2,7 @@
 Swift Date utilities
 Simple NSDate extension to provide some common date utilities
 #  [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) ![Swift 2.0](https://img.shields.io/badge/swift-2.0-orange.svg)
+![Release 0.1]https://img.shields.io/badge/tag-0.1-blue.svg
 
 ## Requirements
 
