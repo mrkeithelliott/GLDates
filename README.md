@@ -78,7 +78,7 @@ let lastDayOfLastYear = lastYear.lastDayOfYear()
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE.
 
-This project is released under the [MIT license](https://github.com/mrkeithelliott/GLDates/LICENSE).
+This project is released under the [MIT license](https://github.com/mrkeithelliott/GLDates/blob/master/LICENSE).
 
 [xcode]: https://developer.apple.com/xcode "Xcode"
 
