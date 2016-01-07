@@ -177,4 +177,66 @@ public extension NSDate{
             return dates
         }
     }
+    
+    public func formattedSocialTime() -> String {
+        let calendar = NSCalendar.currentCalendar()
+        let dateformatter = NSDateFormatter()
+        dateformatter.dateStyle = .ShortStyle
+        let today = NSDate()
+        let days = today.timeIntervalSinceDate(self).days
+        
+        if calendar.isDateInToday(self){
+            let hours = today.timeIntervalSinceDate(self).hours
+            let mins = today.timeIntervalSinceDate(self).mins
+            let secs = today.timeIntervalSinceDate(self)
+            
+            if hours > 5 {
+                return "today"
+            }
+            if hours > 1 && hours <= 5{
+               return "\(hours) hours ago"
+            }
+            else if mins > 1 {
+                return "\(mins) mins ago"
+            }
+            else if secs < 10 {
+                return "moments ago"
+            }
+            else {
+                let intSeconds = Int(secs)
+                return "\(intSeconds) seconds ago"
+            }
+        }
+        else if calendar.isDateInYesterday(self){
+            return "yesterday"
+        }
+        else if days <= 7{
+            return "\(days) days ago"
+        }
+        else{
+            return dateformatter.stringFromDate(self)
+        }
+    }
 }
+
+extension NSTimeInterval {
+    var mins: Int {
+        return Int(floor(self/60.0))
+    }
+    
+    var hours: Int {
+        let one_hour: Int = Int(60 * 60)
+        return Int(floor(self / Double(one_hour)))
+    }
+    
+    var days: Int {
+        let one_day: Int = Int(60 * 60 * 24)
+        return Int(floor(self / Double(one_day)))
+    }
+    
+    var weeks: Int {
+        let one_week: Int = Int(60 * 60 * 24 * 7)
+        return Int(floor(self / Double(one_week)))
+    }
+}
+

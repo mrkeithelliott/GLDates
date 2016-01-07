@@ -385,6 +385,7 @@
 				CD9DD0671C3EC298009D6A96 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CD9DD0681C3EC298009D6A96 /* Build configuration list for PBXNativeTarget "GLDatesTests" */ = {
 			isa = XCConfigurationList;
@@ -393,6 +394,7 @@
 				CD9DD06A1C3EC298009D6A96 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
