@@ -1,7 +1,7 @@
 # GLDates ![GitHub license](https://img.shields.io/badge/license-MIT-lightgrey.svg)
 Swift Date utilities
 Simple NSDate extension to provide some common date utilities
-#  [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+#  [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) ![Swift 2.0](https://img.shields.io/badge/swift-2.0-orange.svg)
 
 ## Requirements
 
@@ -26,19 +26,34 @@ import GLDates
 let yesterday = NSDate.yesterday()   
 ```
 
-#### Getting Last year and performing other operations
+#### Date operations
+Getting Last Year
 ```swift
 let today = NSDate()
 let lastYear = today.previousDate(1, monthsBack: 0, daysBack: 0)
+```
+Getting Last month
+```swift
 let lastMonth = today.previousDate(0, monthsBack: 1, daysBack: 0)
-
+```
+Getting the first day of the month
+```swift
 let firstOfMonth = NSDate().firstOfMonth()
-let firstOfYear = lastYear.firstOfYear()
-
+```
+Getting the last day of the month, given a starting date
+```swift
 let lastDayOfCurrentMonth = today.lastDayOfMonth()
 let lastDayOfLastMonth = lastMonth.lastDayOfMonth()
+```
+Getting the first day of the year
+```swift
+let firstOfYear = lastYear.firstOfYear()
+```
+Getting the last day of the year
+```swift
 let lastDayOfCurrentYear = today.lastDayOfYear()
 let lastDayOfLastYear = lastYear.lastDayOfYear()
+```
 
 ```
 ## License
