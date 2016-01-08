@@ -67,13 +67,6 @@ let lastDayOfLastYear = lastYear.lastDayOfYear()
 ```
 
 ```swift
-let _4hours: NSTimeInterval = Double(60 * 60 * -4)
-date = NSDate(timeInterval:_4hours, sinceDate: today)
-dateString = date.formattedSocialTime()
-// prints "4 hours ago"
-```
-
-```swift
 let _10hours: NSTimeInterval = Double(60 * 60 * -10)
 date = NSDate(timeInterval:_10hours, sinceDate: today)
 dateString = date.formattedSocialTime()
@@ -99,6 +92,43 @@ let _5seconds: NSTimeInterval = Double(-5)
 date = NSDate(timeInterval:_5seconds, sinceDate: today)
 dateString = date.formattedSocialTime()
 // prints "moments ago"
+```
+
+#### Finding the Next Date Using Patterns
+You can use:
+```swift
+func nextDateSkippingDays(daysBetween: Int, currentDate: NSDate)->NSDate
+```
+on an NSDate to find the next date that is closes to the passed in current date, while adhering to a repeat policy.  For example, if you have a repeating date from last month (repeats every 3 days) and you want to find the date that is closest to the current date while following the repeating schedule, you can accomplish this with the nextDateSkippingDays()
+
+There are also methods that will allow you to skip weeks and months to accomplish similar tasks.
+```swift
+func nextDateSkippingWeeks(weeksBetween: Int, currentDate: NSDate)->NSDate
+func nextDateSkippingMonths(monthsBetween: Int, currentDate: NSDate)->NSDate
+```
+
+Another series of methods will return you the array of dates that follow the pattern from the initial date up to the closest date passed in as the current date.
+```swift
+func getDatesSkippingDays(daysBetween: Int, currentDate: NSDate, currentlist: [NSDate]? = nil)->[NSDate]?
+func getDatesSkippingWeeks(weeksBetween: Int, currentDate: NSDate, currentlist: [NSDate]? = nil)->[NSDate]?
+func getDatesSkippingMonths(monthsBetween: Int, currentDate: NSDate, currentlist: [NSDate]? = nil)->[NSDate]?
+```
+
+Example Usage
+```swift
+let today = NSDate()
+today.dateWithNoTime()
+//prints "Jan 8, 2016, 12:00 AM"
+
+let cal = NSCalendar.currentCalendar()
+let _5daysAgo = cal.dateByAddingUnit(.Day, value: -5, toDate: today, options: .MatchStrictly)
+// prints "Jan 3, 2016, 9:15 AM"
+
+let nextDate = _5daysAgo!.nextDateSkippingDays(2, currentDate: today)
+// prints "Jan 9, 2016, 12:00 AM"
+
+let nextDates = _5daysAgo!.getDatesSkippingDays(2, currentDate: today)
+// prints [["Jan 5, 2016, 12:00 AM", "Jan 7, 2016, 12:00 AM"]
 ```
 ## License
 
