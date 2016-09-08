@@ -8,13 +8,13 @@
 
 import Foundation
 
-public extension NSDate{
+public extension Date{
     /** yesterday() Returns the yesterday
         returns: NSDate
     */
-    public class func yesterday()->NSDate{
-        let calendar = NSCalendar.currentCalendar()
-        return calendar.dateByAddingUnit(.Day, value: -1, toDate: NSDate(), options: .MatchStrictly)!.dateWithNoTime()
+    public static func yesterday()->Date{
+        let calendar = Calendar.current
+        return (calendar as NSCalendar).date(byAdding: .day, value: -1, to: Date(), options: .matchStrictly)!.dateWithNoTime()
     }
     
     
@@ -25,127 +25,132 @@ public extension NSDate{
      parameter daysBack: the number days to subtract
      returns: NSDate
     */
-    public func previousDate(yearsBack: Int = 0, monthsBack: Int = 0, daysBack: Int)->NSDate{
-        let calendar = NSCalendar.currentCalendar()
-        let dateComps = NSDateComponents()
+    public func previousDate(_ yearsBack: Int = 0, monthsBack: Int = 0, daysBack: Int)->Date{
+        let calendar = Calendar.current
+        var dateComps = DateComponents()
         dateComps.year = -yearsBack
         dateComps.month = -monthsBack
         dateComps.day = -daysBack
-        let date = calendar.dateByAddingComponents(dateComps, toDate: self, options: [])
+        let date = (calendar as NSCalendar).date(byAdding: dateComps, to: self, options: [])
         return date!.dateWithNoTime()
     }
     
     /// Returns the first day of the month
-    public func firstOfMonth()->NSDate{
-        let calendar = NSCalendar.currentCalendar()
-        let dateComps = calendar.components([.Year,.Month], fromDate: self)
+    public func firstOfMonth()->Date{
+        let calendar = Calendar.current
+        var dateComps = (calendar as NSCalendar).components([.year,.month], from: self)
         dateComps.day = 1
-        let date = calendar.dateFromComponents(dateComps)
+        let date = calendar.date(from: dateComps)
         return date!.dateWithNoTime()
     }
     
     /// Returns the first of the Year
-    public func firstOfYear()->NSDate{
-        let calendar = NSCalendar.currentCalendar()
-        let dateComps = calendar.components([.Year], fromDate: self)
+    public func firstOfYear()->Date{
+        let calendar = Calendar.current
+        var dateComps = (calendar as NSCalendar).components([.year], from: self)
         dateComps.day = 1
         dateComps.month = 1
-        let date = calendar.dateFromComponents(dateComps)
+        let date = calendar.date(from: dateComps)
         return date!.dateWithNoTime()
     }
     
     /// Returns the last day of the Month
-    public func lastDayOfMonth()->NSDate{
-        let calendar = NSCalendar.currentCalendar()
-        let firstDayNextMonth = calendar.dateByAddingUnit(.Month, value: 1, toDate: self, options: .MatchStrictly)!.firstOfMonth()
+    public func lastDayOfMonth()->Date{
+        let calendar = Calendar.current
+        let firstDayNextMonth = (calendar as NSCalendar).date(byAdding: .month, value: 1, to: self, options: .matchStrictly)!.firstOfMonth()
         let lastDay = firstDayNextMonth.previousDate(daysBack: 1)
         return lastDay.dateWithNoTime()
     }
     
     /// Returns the last day of the Year
-    public func lastDayOfYear()->NSDate{
-        let calendar = NSCalendar.currentCalendar()
-        let nextYear = calendar.dateByAddingUnit(.Year, value: 1, toDate: self, options: [])!.firstOfMonth()
-        let lastDayOfYear = nextYear.previousDate(daysBack: 1).dateWithNoTime()
+    public func lastDayOfYear()->Date{
+        let calendar = Calendar.current
+        var dateComps = calendar.dateComponents([.year,.month], from: Date())
+        dateComps.day = 1
+        dateComps.month = 1
+        dateComps.year = dateComps.year! + 1
+        let nextMonth = calendar.date(from: dateComps)
+        let lastDayOfYear = calendar.date(byAdding: .day, value: -1, to: nextMonth!)
+
         
-        return lastDayOfYear
+        return lastDayOfYear!
     }
     
     /// Returns the start of the Day for user' current calendar - Midnight in the US
-    public func dateWithNoTime()->NSDate{
-        let calendar = NSCalendar.currentCalendar()
-        let date = calendar.startOfDayForDate(self)
+    public func dateWithNoTime()->Date{
+        let calendar = Calendar.current
+        let date = calendar.startOfDay(for: self)
         return date
     }
     
     
-    public func nextDateSkippingDays(daysBetween: Int, currentDate: NSDate)->NSDate{
-        let calendar = NSCalendar.currentCalendar()
+    public func nextDateSkippingDays(_ daysBetween: Int, currentDate: Date)->Date{
+        let calendar = Calendar.current
         
-        let now = calendar.startOfDayForDate(currentDate)
-        let begin = calendar.startOfDayForDate(self)
+        let now = calendar.startOfDay(for: currentDate)
+        let begin = calendar.startOfDay(for: self)
         
-        let nextDate = calendar.dateByAddingUnit(.Day, value: daysBetween, toDate: begin, options: .MatchNextTimePreservingSmallerUnits)
+        let nextDate = (calendar as NSCalendar).date(byAdding: .day, value: daysBetween, to: begin, options: .matchNextTimePreservingSmallerUnits)
         
-        if calendar.isDate(nextDate!, inSameDayAsDate: now){
-            return calendar.startOfDayForDate(nextDate!)
+        if calendar.isDate(nextDate!, inSameDayAs: now){
+            return calendar.startOfDay(for: nextDate!)
         }
         
-        if calendar.compareDate(nextDate!, toDate: now, toUnitGranularity: .Day) == .OrderedAscending{
+        if (calendar as NSCalendar).compare(nextDate!, to: now, toUnitGranularity: .day) == .orderedAscending{
             return nextDate!.nextDateSkippingDays(daysBetween, currentDate: currentDate)
         }
             
         else{
-            return calendar.startOfDayForDate(nextDate!)
+            return calendar.startOfDay(for: nextDate!)
         }
     }
     
-    public func nextDateSkippingWeeks(weeksBetween: Int, currentDate: NSDate)->NSDate{
+    public func nextDateSkippingWeeks(_ weeksBetween: Int, currentDate: Date)->Date{
         return nextDateSkippingDays(weeksBetween*7, currentDate: currentDate)
     }
     
-    public func nextDateSkippingMonths(monthsBetween: Int, currentDate: NSDate)->NSDate{
-        let calendar = NSCalendar.currentCalendar()
+    public func nextDateSkippingMonths(_ monthsBetween: Int, currentDate: Date)->Date{
+        let calendar = Calendar.current
         
-        let now = calendar.startOfDayForDate(currentDate)
-        let begin = calendar.startOfDayForDate(self)
+        let now = calendar.startOfDay(for: currentDate)
+        let begin = calendar.startOfDay(for: self)
         
-        let nextDate = calendar.dateByAddingUnit(.Month, value: monthsBetween, toDate: begin, options: .MatchNextTimePreservingSmallerUnits)
+        let nextDate = (calendar as NSCalendar).date(byAdding: .month, value: monthsBetween, to: begin, options: .matchNextTimePreservingSmallerUnits)
         
-        if calendar.isDate(nextDate!, inSameDayAsDate: now){
-            return calendar.startOfDayForDate(nextDate!)
+        if calendar.isDate(nextDate!, inSameDayAs: now){
+            return calendar.startOfDay(for: nextDate!)
         }
         
-        if calendar.compareDate(nextDate!, toDate: now, toUnitGranularity: .Day) == .OrderedAscending{
+        if (calendar as NSCalendar).compare(nextDate!, to: now, toUnitGranularity: .day) == .orderedAscending{
             return nextDate!.nextDateSkippingMonths(monthsBetween, currentDate: currentDate)
         }
             
         else{
-            return calendar.startOfDayForDate(nextDate!)
+            return calendar.startOfDay(for: nextDate!)
         }
     }
     
-    public func getDatesSkippingWeeks(weeksBetween: Int, currentDate: NSDate,
-        currentlist: [NSDate]? = nil)->[NSDate]?{
+    public func getDatesSkippingWeeks(_ weeksBetween: Int, currentDate: Date,
+        currentlist: [Date]? = nil)->[Date]?{
             return getDatesSkippingDays(weeksBetween*7, currentDate: currentDate)
     }
     
-    public func getDatesSkippingDays(daysBetween: Int, currentDate: NSDate, currentlist: [NSDate]? = nil)->[NSDate]?{
-        let calendar = NSCalendar.currentCalendar()
-        var dates = currentlist ?? [NSDate]()
+    public func getDatesSkippingDays(_ daysBetween: Int, currentDate: Date, currentlist: [Date]? = nil)->[Date]?{
+        let calendar = Calendar.current
+        var dates = currentlist ?? [Date]()
         
-        let now = calendar.startOfDayForDate(currentDate)
-        let begin = calendar.startOfDayForDate(self)
+        let now = calendar.startOfDay(for: currentDate)
+        let begin = calendar.startOfDay(for: self)
         
-        let nextDate = calendar.dateByAddingUnit(.Day, value: daysBetween, toDate: begin, options: .MatchNextTimePreservingSmallerUnits)
+        let nextDate = (calendar as NSCalendar).date(byAdding: .day, value: daysBetween, to: begin, options: .matchNextTimePreservingSmallerUnits)
         
-        if calendar.isDate(nextDate!, inSameDayAsDate: now){
-            dates.append(calendar.startOfDayForDate(nextDate!))
+        if calendar.isDate(nextDate!, inSameDayAs: now){
+            dates.append(calendar.startOfDay(for: nextDate!))
             return dates
         }
         
-        if calendar.compareDate(nextDate!, toDate: now, toUnitGranularity: .Day) == .OrderedAscending{
-            dates.append(calendar.startOfDayForDate(nextDate!))
+        if (calendar as NSCalendar).compare(nextDate!, to: now, toUnitGranularity: .day) == .orderedAscending{
+            dates.append(calendar.startOfDay(for: nextDate!))
             return nextDate!.getDatesSkippingDays(daysBetween, currentDate: currentDate, currentlist: dates)
         }
             
@@ -154,22 +159,22 @@ public extension NSDate{
         }
     }
     
-    public func getDatesSkippingMonths(monthsBetween: Int, currentDate: NSDate, currentlist: [NSDate]? = nil)->[NSDate]?{
-        let calendar = NSCalendar.currentCalendar()
-        var dates = currentlist ?? [NSDate]()
+    public func getDatesSkippingMonths(_ monthsBetween: Int, currentDate: Date, currentlist: [Date]? = nil)->[Date]?{
+        let calendar = Calendar.current
+        var dates = currentlist ?? [Date]()
         
-        let now = calendar.startOfDayForDate(currentDate)
-        let begin = calendar.startOfDayForDate(self)
+        let now = calendar.startOfDay(for: currentDate)
+        let begin = calendar.startOfDay(for: self)
         
-        let nextDate = calendar.dateByAddingUnit(.Month, value: monthsBetween, toDate: begin, options: .MatchNextTimePreservingSmallerUnits)
+        let nextDate = (calendar as NSCalendar).date(byAdding: .month, value: monthsBetween, to: begin, options: .matchNextTimePreservingSmallerUnits)
         
-        if calendar.isDate(nextDate!, inSameDayAsDate: now){
-            dates.append(calendar.startOfDayForDate(nextDate!))
+        if calendar.isDate(nextDate!, inSameDayAs: now){
+            dates.append(calendar.startOfDay(for: nextDate!))
             return dates
         }
         
-        if calendar.compareDate(nextDate!, toDate: now, toUnitGranularity: .Day) == .OrderedAscending{
-            dates.append(calendar.startOfDayForDate(nextDate!))
+        if (calendar as NSCalendar).compare(nextDate!, to: now, toUnitGranularity: .day) == .orderedAscending{
+            dates.append(calendar.startOfDay(for: nextDate!))
             return nextDate!.getDatesSkippingMonths(monthsBetween, currentDate: currentDate, currentlist: dates)
         }
             
@@ -179,16 +184,16 @@ public extension NSDate{
     }
     
     public func formattedSocialTime() -> String {
-        let calendar = NSCalendar.currentCalendar()
-        let dateformatter = NSDateFormatter()
-        dateformatter.dateStyle = .ShortStyle
-        let today = NSDate()
-        let days = today.timeIntervalSinceDate(self).days
+        let calendar = Calendar.current
+        let dateformatter = DateFormatter()
+        dateformatter.dateStyle = .short
+        let today = Date()
+        let days = today.timeIntervalSince(self).days
         
         if calendar.isDateInToday(self){
-            let hours = today.timeIntervalSinceDate(self).hours
-            let mins = today.timeIntervalSinceDate(self).mins
-            let secs = today.timeIntervalSinceDate(self)
+            let hours = today.timeIntervalSince(self).hours
+            let mins = today.timeIntervalSince(self).mins
+            let secs = today.timeIntervalSince(self)
             
             if hours > 5 {
                 return "today"
@@ -214,12 +219,12 @@ public extension NSDate{
             return "\(days) days ago"
         }
         else{
-            return dateformatter.stringFromDate(self)
+            return dateformatter.string(from: self)
         }
     }
 }
 
-extension NSTimeInterval {
+extension TimeInterval {
     var mins: Int {
         return Int(floor(self/60.0))
     }

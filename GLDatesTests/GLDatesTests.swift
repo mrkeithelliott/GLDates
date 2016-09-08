@@ -11,15 +11,15 @@ import GLDates
 @testable import GLDates
 
 class GLDatesTests: XCTestCase {
-    var today: NSDate!
-    var calendar: NSCalendar!
-    var test_yesterday: NSDate!
+    var today: Date!
+    var calendar: Calendar!
+    var test_yesterday: Date!
     
     override func setUp() {
         super.setUp()
-        today = NSDate()
-        calendar = NSCalendar.currentCalendar()
-        test_yesterday = calendar.dateByAddingUnit(.Day, value: -1, toDate: today, options: .MatchStrictly)
+        today = Date()
+        calendar = Calendar.current
+        test_yesterday = calendar.date(byAdding: .day, value: -1, to: today)
         
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -31,8 +31,8 @@ class GLDatesTests: XCTestCase {
     
     
     func testGettingYesterday() {
-        let yesterday = NSDate.yesterday()
-        XCTAssertTrue(calendar.compareDate(yesterday, toDate: test_yesterday!, toUnitGranularity: .Day) == .OrderedSame)
+        let yesterday = Date.yesterday()
+        XCTAssertTrue(calendar.compare(yesterday, to: test_yesterday!, toGranularity: .day) == .orderedSame)
     }
     
     func testPreviousDay(){
@@ -40,92 +40,92 @@ class GLDatesTests: XCTestCase {
         let _2MonthsAgo = today.previousDate(0, monthsBack: 2, daysBack: 0)
         let _2YearsAgo = today.previousDate(2, monthsBack: 0, daysBack: 0)
         
-        let test_2MonthsBack = calendar.dateByAddingUnit(.Month, value: -2, toDate: today, options: [])
-        let test_2YearsBack = calendar.dateByAddingUnit(.Year, value: -2, toDate: today, options: [])
+        let test_2MonthsBack = calendar.date(byAdding: .month, value: -2, to: today)
+        let test_2YearsBack = calendar.date(byAdding: .year, value: -2, to: today)
         
-        XCTAssertTrue(calendar.compareDate(_1dayAgo, toDate: test_yesterday!, toUnitGranularity: .Day) == .OrderedSame)
-        XCTAssertTrue(calendar.compareDate(_2MonthsAgo, toDate: test_2MonthsBack!, toUnitGranularity: .Day) == .OrderedSame)
-        XCTAssertTrue(calendar.compareDate(_2YearsAgo, toDate: test_2YearsBack!, toUnitGranularity: .Day) == .OrderedSame)
+        XCTAssertTrue(calendar.compare(_1dayAgo, to: test_yesterday!, toGranularity: .day) == .orderedSame)
+        XCTAssertTrue(calendar.compare(_2MonthsAgo, to: test_2MonthsBack!, toGranularity: .day) == .orderedSame)
+        XCTAssertTrue(calendar.compare(_2YearsAgo, to: test_2YearsBack!, toGranularity: .day) == .orderedSame)
     }
     
     func testFirstDayOfMonth(){
         let firstDayOfMonth = today.firstOfMonth()
-        let dateComps = calendar.components([.Year,.Month], fromDate: today)
+        var dateComps = calendar.dateComponents([.year,.month], from: today)
         dateComps.day = 1
-        let testFirstOfMonth = calendar.dateFromComponents(dateComps)
+        let testFirstOfMonth = calendar.date(from: dateComps)
         
-        XCTAssertTrue(calendar.compareDate(firstDayOfMonth, toDate: testFirstOfMonth!, toUnitGranularity: .Day) == .OrderedSame)
+        XCTAssertTrue(calendar.compare(firstDayOfMonth, to: testFirstOfMonth!, toGranularity: .day) == .orderedSame)
     }
     
     func testFirstDayofYear() {
         let firstOfYear = today.firstOfYear()
-        let dateComps = calendar.components([.Year], fromDate: today)
+        var dateComps = calendar.dateComponents([.year], from: today)
         dateComps.day = 1
         dateComps.month = 1
-        let testFirstOfYear = calendar.dateFromComponents(dateComps)
+        let testFirstOfYear = calendar.date(from: dateComps)
         
-        XCTAssertTrue(calendar.compareDate(firstOfYear, toDate: testFirstOfYear!, toUnitGranularity: .Day) == .OrderedSame)
+        XCTAssertTrue(calendar.compare(firstOfYear, to: testFirstOfYear!, toGranularity: .day) == .orderedSame)
     }
     
     func testLastDayOfMonth() {
         let lastDayOfMonth = today.lastDayOfMonth()
-        let dateComps = calendar.components([.Year,.Month], fromDate: today)
+        var dateComps = calendar.dateComponents([.year,.month], from: today)
         dateComps.day = 1
-        dateComps.month = dateComps.month + 1
-        let nextMonth = calendar.dateFromComponents(dateComps)
-        let test_lastDay = calendar.dateByAddingUnit(.Day, value: -1, toDate: nextMonth!, options: [])
+        dateComps.month = dateComps.month! + 1
+        let nextMonth = calendar.date(from: dateComps)
+        let test_lastDay = calendar.date(byAdding: .day, value: -1, to: nextMonth!)
         
-        XCTAssertTrue(calendar.compareDate(lastDayOfMonth, toDate: test_lastDay!, toUnitGranularity: .Day) == .OrderedSame)
+        XCTAssertTrue(calendar.compare(lastDayOfMonth, to: test_lastDay!, toGranularity: .day) == .orderedSame)
     }
     
     func testLastDayOfYear() {
         let lastDayOfYear = today.lastDayOfYear()
-        let dateComps = calendar.components([.Year,.Month], fromDate: today)
+        var dateComps = calendar.dateComponents([.year,.month], from: today)
         dateComps.day = 1
         dateComps.month = 1
-        dateComps.year = dateComps.year + 1
-        let nextMonth = calendar.dateFromComponents(dateComps)
-        let test_lastDay = calendar.dateByAddingUnit(.Day, value: -1, toDate: nextMonth!, options: [])
+        dateComps.year = dateComps.year! + 1
+        let nextMonth = calendar.date(from: dateComps)
+        let test_lastDay = calendar.date(byAdding: .day, value: -1, to: nextMonth!)
         
-        XCTAssertTrue(calendar.compareDate(lastDayOfYear, toDate: test_lastDay!, toUnitGranularity: .Day) == .OrderedSame)
+        XCTAssertTrue(calendar.compare(lastDayOfYear, to: test_lastDay!, toGranularity: .day) == .orderedSame)
     }
     
     func testDateWithNoTime() {
         let startofday = today.dateWithNoTime()
-        let test_startOfDay = calendar.startOfDayForDate(today)
+        let test_startOfDay = calendar.startOfDay(for: today)
         
-        XCTAssertTrue(calendar.compareDate(startofday, toDate: test_startOfDay, toUnitGranularity: .Day) == .OrderedSame)
+        XCTAssertTrue(calendar.compare(startofday, to: test_startOfDay, toGranularity: .day) == .orderedSame)
     }
     
     func testFormattedSocialTime() {
-        let _5hours: NSTimeInterval = Double(60 * 60 * -5)
+        let _5hours: TimeInterval = Double(60 * 60 * -5)
         
-        var date = NSDate(timeInterval: _5hours, sinceDate: today)
+        var date = Date(timeInterval: _5hours, since: today)
         var dateString = date.formattedSocialTime()
         XCTAssertEqual(dateString, "5 hours ago")
         
-        let _4hours: NSTimeInterval = Double(60 * 60 * -4)
-        date = NSDate(timeInterval:_4hours, sinceDate: today)
+        let _4hours: TimeInterval = Double(60 * 60 * -4)
+        date = Date(timeInterval:_4hours, since: today)
         dateString = date.formattedSocialTime()
         XCTAssertEqual(dateString, "4 hours ago")
         
-        let _10hours: NSTimeInterval = Double(60 * 60 * -10)
-        date = NSDate(timeInterval:_10hours, sinceDate: today)
+        let _10hours: TimeInterval = Double(60 * 60 * -10)
+        date = Date(timeInterval:_10hours, since: today)
         dateString = date.formattedSocialTime()
         XCTAssertEqual(dateString, "today")
         
-        let _30mins: NSTimeInterval = Double(60 * -30)
-        date = NSDate(timeInterval: _30mins, sinceDate: today)
+        let _30mins: TimeInterval = Double(60 * -30)
+        date = Date(timeInterval: _30mins, since: today)
         dateString = date.formattedSocialTime()
         XCTAssertEqual(dateString, "30 mins ago")
         
-        let _30seconds: NSTimeInterval = Double(-30)
-        date = NSDate(timeInterval:_30seconds, sinceDate: today)
+        let _30seconds: TimeInterval = Double(-30)
+        date = Date(timeInterval:_30seconds, since: today)
         dateString = date.formattedSocialTime()
         XCTAssertEqual(dateString, "30 seconds ago")
         
-        let _5seconds: NSTimeInterval = Double(-5)
-        date = NSDate(timeInterval:_5seconds, sinceDate: today)
+        let _5seconds: TimeInterval = Double(-5)
+        date = Date(timeInterval:_5seconds, since: today)
         dateString = date.formattedSocialTime()
         XCTAssertEqual(dateString, "moments ago")
     }
